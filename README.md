@@ -9,10 +9,8 @@ The awesome GoTK library for Golang, aims to bring developer friendliness to jus
 
 ## Getting Started
 
-Visit [GoTK wiki](https://www.cyberpull.com/wiki/opensource/gotk) page on Cyberpull Wiki for more info
+Visit [GoTK wiki](https://www.cyberpull.com/wiki/opensource/gotk) page for more info
 
 ## License
-
-&copy; Cyberpull, 2022~time.Now()
 
 Released under the [MIT License](https://github.com/Cyberpull/gotk/blob/master/LICENSE)
