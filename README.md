@@ -13,4 +13,4 @@ Visit [GoTK wiki](https://www.cyberpull.com/wiki/opensource/gotk) page for more 
 
 ## License
 
-Released under the [MIT License](https://github.com/Cyberpull/gotk/blob/master/LICENSE)
+Released under the [MIT License](LICENSE)
