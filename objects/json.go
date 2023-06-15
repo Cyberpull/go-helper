@@ -6,6 +6,13 @@ import (
 	"cyberpull.com/gotk/validator"
 )
 
+type JSONEngine interface {
+	Decode(data []byte, v any) (err error)
+	Encode(v any) (value []byte, err error)
+}
+
+// ============================
+
 type pJSON struct {
 	validator *validator.ValidatorInstance
 }
