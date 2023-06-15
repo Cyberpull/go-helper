@@ -29,6 +29,14 @@ func Validate(data any, rules ...any) (err error) {
 	}
 }
 
+func SetTagName(name string) {
+	validate.SetTagName(name)
+}
+
+func ResetTagName() {
+	validate.SetTagName("validate")
+}
+
 func one[T any](def T, attr []any) T {
 	if len(attr) == 0 {
 		return attr[0].(T)
