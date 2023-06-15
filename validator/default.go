@@ -6,9 +6,11 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-var validate *validator.Validate
+type ValidatorInstance struct {
+	validate *validator.Validate
+}
 
-func Validate(data any, rules ...any) (err error) {
+func (i *ValidatorInstance) Validate(data any, rules ...any) (err error) {
 	rValue := reflect.ValueOf(data)
 
 	rType := rValue.Type()
@@ -22,31 +24,26 @@ func Validate(data any, rules ...any) (err error) {
 
 	switch rKind {
 	case reflect.Struct:
-		return validate.Struct(value)
+		return i.validate.Struct(value)
 	default:
 		rule := one[string]("", rules)
-		return validate.Var(value, rule)
+		return i.validate.Var(value, rule)
 	}
-}
-
-func SetTagName(name string) {
-	validate.SetTagName(name)
-}
-
-func ResetTagName() {
-	validate.SetTagName("validate")
-}
-
-func one[T any](def T, attr []any) T {
-	if len(attr) == 0 {
-		return attr[0].(T)
-	}
-
-	return def
 }
 
 // ==========================
 
-func init() {
-	validate = validator.New()
+const defaultTagName string = "validate"
+
+func New(tagName ...string) *ValidatorInstance {
+	if len(tagName) == 0 {
+		tagName = append(tagName, defaultTagName)
+	}
+
+	validate := validator.New()
+	validate.SetTagName(tagName[0])
+
+	return &ValidatorInstance{
+		validate: validate,
+	}
 }
