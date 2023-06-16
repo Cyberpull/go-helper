@@ -22,7 +22,7 @@ func (j *pJSON) Decode(data []byte, v any) (err error) {
 		return
 	}
 
-	if err = validator.Validate(v); err != nil {
+	if err = j.validator.Validate(v); err != nil {
 		return
 	}
 
@@ -30,7 +30,7 @@ func (j *pJSON) Decode(data []byte, v any) (err error) {
 }
 
 func (j *pJSON) Encode(v any) (value []byte, err error) {
-	if err = validator.Validate(v); err != nil {
+	if err = j.validator.Validate(v); err != nil {
 		return
 	}
 
@@ -51,7 +51,7 @@ func ToJSON(v any) (value []byte, err error) {
 
 // ============================
 
-func NewJSON(validatorTagName ...string) *pJSON {
+func NewJSON(validatorTagName ...string) JSONEngine {
 	return &pJSON{
 		validator: validator.New(validatorTagName...),
 	}
