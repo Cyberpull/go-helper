@@ -1,4 +1,4 @@
-package uuid
+package gotk
 
 import (
 	"cyberpull.com/gotk/errors"
@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func Generate() (value string, err error) {
+func UUID() (value string, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = errors.From(r)

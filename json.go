@@ -1,9 +1,7 @@
-package objects
+package gotk
 
 import (
 	"encoding/json"
-
-	"cyberpull.com/gotk/validator"
 )
 
 type JSONEngine interface {
@@ -13,24 +11,24 @@ type JSONEngine interface {
 
 // ============================
 
-type pJSON struct {
-	validator *validator.ValidatorInstance
+type jsonEngine struct {
+	validator Validator
 }
 
-func (j *pJSON) Decode(data []byte, v any) (err error) {
+func (e *jsonEngine) Decode(data []byte, v any) (err error) {
 	if err = json.Unmarshal(data, v); err != nil {
 		return
 	}
 
-	if err = j.validator.Validate(v); err != nil {
+	if err = e.validator.Validate(v); err != nil {
 		return
 	}
 
 	return
 }
 
-func (j *pJSON) Encode(v any) (value []byte, err error) {
-	if err = j.validator.Validate(v); err != nil {
+func (e *jsonEngine) Encode(v any) (value []byte, err error) {
+	if err = e.validator.Validate(v); err != nil {
 		return
 	}
 
@@ -52,15 +50,19 @@ func ToJSON(v any) (value []byte, err error) {
 // ============================
 
 func NewJSON(validatorTagName ...string) JSONEngine {
-	return &pJSON{
-		validator: validator.New(validatorTagName...),
-	}
+	engine := new(jsonEngine)
+	prepareJSON(engine, validatorTagName...)
+	return engine
 }
 
 // ============================
 
-var JSON pJSON
+var JSON jsonEngine
+
+func prepareJSON(engine *jsonEngine, validatorTagName ...string) {
+	engine.validator = NewValidator(validatorTagName...)
+}
 
 func init() {
-	JSON.validator = validator.New()
+	prepareJSON(&JSON)
 }
