@@ -3,7 +3,7 @@ package hooks
 import (
 	"reflect"
 
-	"cyberpull.com/gotk/errors"
+	"cyberpull.com/gotk/v2/errors"
 )
 
 var filterHooks = make(map[string][]reflect.Value)

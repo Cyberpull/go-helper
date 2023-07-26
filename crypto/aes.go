@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"io"
 
-	"cyberpull.com/gotk/errors"
+	"cyberpull.com/gotk/v2/errors"
 )
 
 func EncryptAES(plaintext string, cipherKey ...string) (value string, err error) {

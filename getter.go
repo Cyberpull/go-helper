@@ -3,7 +3,7 @@ package gotk
 import (
 	"reflect"
 
-	"cyberpull.com/gotk/errors"
+	"cyberpull.com/gotk/v2/errors"
 )
 
 type Getter interface {

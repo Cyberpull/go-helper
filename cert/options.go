@@ -1,6 +1,6 @@
 package cert
 
-import "cyberpull.com/gotk/errors"
+import "cyberpull.com/gotk/v2/errors"
 
 type Options struct {
 	CertFile string

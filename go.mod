@@ -1,4 +1,4 @@
-module cyberpull.com/gotk
+module cyberpull.com/gotk/v2
 
 go 1.20
 
