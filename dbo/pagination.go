@@ -4,7 +4,7 @@ import (
 	"math"
 	"reflect"
 
-	"cyberpull.com/gotk/v2/errors"
+	"cyberpull.com/gotk/v3/errors"
 
 	"gorm.io/gorm"
 )

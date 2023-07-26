@@ -3,7 +3,7 @@ package hooks
 import (
 	"reflect"
 
-	"cyberpull.com/gotk/v2/errors"
+	"cyberpull.com/gotk/v3/errors"
 )
 
 type Callback any

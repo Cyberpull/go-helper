@@ -2,10 +2,10 @@
 
 The awesome GoTK library for Golang, aims to bring developer friendliness to just about every project.
 
-[![Go Report Card](https://goreportcard.com/badge/cyberpull.com/gotk/v2)](https://goreportcard.com/report/cyberpull.com/gotk/v2)
+[![Go Report Card](https://goreportcard.com/badge/cyberpull.com/gotk/v3)](https://goreportcard.com/report/cyberpull.com/gotk/v3)
 ![Test Status](https://github.com/Cyberpull/gotk/actions/workflows/test.yml/badge.svg)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-[![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/cyberpull.com/gotk/v2?tab=doc)
+[![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/cyberpull.com/gotk/v3?tab=doc)
 
 ## Getting Started
 

@@ -1,7 +1,7 @@
 package gotk
 
 import (
-	"cyberpull.com/gotk/v2/errors"
+	"cyberpull.com/gotk/v3/errors"
 
 	"github.com/google/uuid"
 )
