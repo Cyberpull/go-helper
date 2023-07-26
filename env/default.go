@@ -3,7 +3,7 @@ package env
 import (
 	"os"
 
-	"cyberpull.com/gotk/v3/log"
+	"cyberpull.com/gotk/v2/log"
 
 	"github.com/joho/godotenv"
 )

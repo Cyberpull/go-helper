@@ -4,9 +4,9 @@ import (
 	"crypto/tls"
 	"os"
 
-	_ "cyberpull.com/gotk/v3/env"
+	_ "cyberpull.com/gotk/v2/env"
 
-	"cyberpull.com/gotk/v3/errors"
+	"cyberpull.com/gotk/v2/errors"
 )
 
 var (

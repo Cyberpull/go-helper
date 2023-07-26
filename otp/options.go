@@ -1,7 +1,7 @@
 package otp
 
 import (
-	_ "cyberpull.com/gotk/v3/env"
+	_ "cyberpull.com/gotk/v2/env"
 
 	"github.com/pquerna/otp"
 )
