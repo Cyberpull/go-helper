@@ -69,6 +69,15 @@ func (s *dbInstance) Seed() (err error) {
 
 // ======================
 
+func DB(i Instance, db ...*gorm.DB) (value *gorm.DB, err error) {
+	if i == nil {
+		err = errors.New("No database connection instance found.")
+		return
+	}
+
+	return i.DB(db...)
+}
+
 func NewInstance(db *gorm.DB) Instance {
 	instance := &dbInstance{}
 	instance.db = db
