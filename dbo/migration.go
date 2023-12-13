@@ -30,6 +30,10 @@ func (m *dbMigration) Run(db *gorm.DB, seed ...bool) (err error) {
 
 var Migration dbMigration
 
+func initMigration(m *dbMigration) {
+	m.models = make([]any, 0)
+}
+
 func init() {
-	Migration.models = make([]any, 0)
+	initMigration(&Migration)
 }

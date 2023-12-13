@@ -28,6 +28,10 @@ func (s *dbSeeder) Run(db *gorm.DB) (err error) {
 
 var Seeder dbSeeder
 
+func initSeeders(s *dbSeeder) {
+	s.handlers = make([]SeederHandler, 0)
+}
+
 func init() {
-	Seeder.handlers = make([]SeederHandler, 0)
+	initSeeders(&Seeder)
 }

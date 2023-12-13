@@ -9,6 +9,8 @@ import (
 type Instance interface {
 	New() *gorm.DB
 	DB(db ...*gorm.DB) (value *gorm.DB, err error)
+	AddMigrations(models ...any)
+	AddSeeders(handlers ...SeederHandler)
 	Migrate(seed ...bool) (err error)
 	Seed() (err error)
 }
@@ -16,7 +18,9 @@ type Instance interface {
 // ======================
 
 type dbInstance struct {
-	db *gorm.DB
+	db         *gorm.DB
+	migrations dbMigration
+	seeders    dbSeeder
 }
 
 func (s *dbInstance) New() *gorm.DB {
@@ -39,18 +43,38 @@ func (s *dbInstance) DB(db ...*gorm.DB) (value *gorm.DB, err error) {
 	return
 }
 
+func (s *dbInstance) AddMigrations(models ...any) {
+	s.migrations.Add(models...)
+}
+
+func (s *dbInstance) AddSeeders(handlers ...SeederHandler) {
+	s.seeders.Add(handlers...)
+}
+
 func (s *dbInstance) Migrate(seed ...bool) (err error) {
-	return Migration.Run(s.db, seed...)
+	if err = s.migrations.Run(s.db); err != nil {
+		return
+	}
+
+	if len(seed) > 0 && seed[0] {
+		err = s.seeders.Run(s.db)
+	}
+
+	return
 }
 
 func (s *dbInstance) Seed() (err error) {
-	return Seeder.Run(s.db)
+	return s.seeders.Run(s.db)
 }
 
 // ======================
 
 func NewInstance(db *gorm.DB) Instance {
-	return &dbInstance{
-		db: db,
-	}
+	instance := &dbInstance{}
+	instance.db = db
+
+	initMigration(&instance.migrations)
+	initSeeders(&instance.seeders)
+
+	return instance
 }
