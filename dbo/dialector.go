@@ -19,13 +19,23 @@ func dialector(opts *Options) (conn gorm.Dialector, err error) {
 				return mysql.Open(opts.DSN)
 			}
 
+			if opts.Charset == "" {
+				opts.Charset = "utf8mb4"
+			}
+
+			if opts.Collation == "" {
+				opts.Collation = "utf8mb4_general_ci"
+			}
+
 			return mysql.Open(fmt.Sprintf(
-				"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+				"%s:%s@tcp(%s:%s)/%s?charset=%s&collation=%s&parseTime=True&loc=Local",
 				opts.Username,
 				opts.Password,
 				opts.Host,
 				opts.Port,
 				opts.DBName,
+				opts.Charset,
+				opts.Collation,
 			))
 		}()
 

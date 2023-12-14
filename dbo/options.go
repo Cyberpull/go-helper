@@ -9,11 +9,13 @@ const (
 )
 
 type Options struct {
-	Driver   DRIVER
-	Host     string
-	Port     string
-	Username string
-	Password string
-	DBName   string
-	DSN      string
+	Driver    DRIVER
+	Host      string
+	Port      string
+	Username  string
+	Password  string
+	DBName    string
+	Charset   string
+	Collation string
+	DSN       string
 }
