@@ -2,18 +2,13 @@ package dbo
 
 import (
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 )
 
 func Connect(opts *Options) (i Instance, err error) {
 	var db *gorm.DB
 	var conn gorm.Dialector
 
-	config := &gorm.Config{
-		Logger:         logger.Default.LogMode(logger.Silent),
-		NamingStrategy: schema.NamingStrategy{},
-	}
+	config := opts.getConfig()
 
 	if conn, err = dialector(opts); err != nil {
 		return
