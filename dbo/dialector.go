@@ -19,14 +19,6 @@ func dialector(opts *Options) (conn gorm.Dialector, err error) {
 				return mysql.Open(opts.DSN)
 			}
 
-			if opts.Charset == "" {
-				opts.Charset = "utf8mb4"
-			}
-
-			if opts.Collation == "" {
-				opts.Collation = "utf8mb4_general_ci"
-			}
-
 			return mysql.Open(fmt.Sprintf(
 				"%s:%s@tcp(%s:%s)/%s?charset=%s&collation=%s&parseTime=True&loc=Local",
 				opts.Username,
@@ -34,8 +26,8 @@ func dialector(opts *Options) (conn gorm.Dialector, err error) {
 				opts.Host,
 				opts.Port,
 				opts.DBName,
-				opts.Charset,
-				opts.Collation,
+				charset(opts),
+				collation(opts),
 			))
 		}()
 
@@ -66,9 +58,37 @@ func dialector(opts *Options) (conn gorm.Dialector, err error) {
 }
 
 func dbDriver(opts *Options) DRIVER {
+	if opts == nil {
+		return ""
+	}
+
 	if opts.Driver == "" {
 		opts.Driver = DRIVER_PGSQL
 	}
 
 	return opts.Driver
+}
+
+func engine(opts *Options) ENGINE {
+	if opts.Engine == "" {
+		opts.Engine = ENGINE_INNODB
+	}
+
+	return opts.Engine
+}
+
+func charset(opts *Options) string {
+	if opts.Charset == "" {
+		opts.Charset = "utf8mb4"
+	}
+
+	return opts.Charset
+}
+
+func collation(opts *Options) string {
+	if opts.Collation == "" {
+		opts.Collation = "utf8mb4_general_ci"
+	}
+
+	return opts.Collation
 }

@@ -18,8 +18,9 @@ type Instance interface {
 // ======================
 
 type dbInstance struct {
+	opts       *Options
 	db         *gorm.DB
-	migrations dbMigration
+	migrations *dbMigration
 	seeders    dbSeeder
 }
 
@@ -78,12 +79,11 @@ func DB(i Instance, db ...*gorm.DB) (value *gorm.DB, err error) {
 	return i.DB(db...)
 }
 
-func NewInstance(db *gorm.DB) Instance {
-	instance := &dbInstance{}
-	instance.db = db
-
-	initMigration(&instance.migrations)
-	initSeeders(&instance.seeders)
-
-	return instance
+func NewInstance(db *gorm.DB, opts *Options) Instance {
+	return &dbInstance{
+		db:         db,
+		opts:       opts,
+		migrations: newMigration(opts),
+		seeders:    *newSeeder(opts),
+	}
 }

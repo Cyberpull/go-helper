@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type SeederHandler func(db *gorm.DB) (err error)
 
 type dbSeeder struct {
+	opts     *Options
 	handlers []SeederHandler
 }
 
@@ -27,6 +28,12 @@ func (s *dbSeeder) Run(db *gorm.DB) (err error) {
 // ===================
 
 var Seeder dbSeeder
+
+func newSeeder(opts *Options) *dbSeeder {
+	s := &dbSeeder{opts: opts}
+	initSeeders(s)
+	return s
+}
 
 func initSeeders(s *dbSeeder) {
 	s.handlers = make([]SeederHandler, 0)

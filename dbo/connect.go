@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-func Connect(opts Options) (i Instance, err error) {
+func Connect(opts *Options) (i Instance, err error) {
 	var db *gorm.DB
 	var conn gorm.Dialector
 
@@ -15,21 +15,22 @@ func Connect(opts Options) (i Instance, err error) {
 		NamingStrategy: schema.NamingStrategy{},
 	}
 
-	conn, err = dialector(&opts)
-
-	if err != nil {
+	if conn, err = dialector(opts); err != nil {
 		return
 	}
 
-	db, err = gorm.Open(conn, config)
+	if db, err = gorm.Open(conn, config); err != nil {
+		return
+	}
 
-	if dbDriver(&opts) == DRIVER_PGSQL {
+	switch dbDriver(opts) {
+	case DRIVER_PGSQL:
 		err = db.Exec(`SET DEFAULT_TRANSACTION_ISOLATION TO SERIALIZABLE`).Error
 		// SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 		// SET DEFAULT_TRANSACTION_ISOLATION TO SERIALIZABLE;
 	}
 
-	i = NewInstance(db)
+	i = NewInstance(db, opts)
 
 	return
 }
