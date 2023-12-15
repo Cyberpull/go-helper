@@ -34,7 +34,7 @@ func (o *RequestOptions) mergeTo(req *http.Request) {
 // ===================
 
 func defaultRequestOptions(opts ...*RequestOptions) *RequestOptions {
-	if len(opts) > 0 {
+	if len(opts) > 0 && opts[0] != nil {
 		return opts[0]
 	}
 

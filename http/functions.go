@@ -10,6 +10,8 @@ import (
 	"cyberpull.com/gotk/v2/errors"
 )
 
+type Callback func(resp *http.Response) (err error)
+
 func Get[T any](url string, opts ...*RequestOptions) (data T, err error) {
 	return Request[T](http.MethodGet, url, opts...)
 }
@@ -31,12 +33,55 @@ func Delete[T any](url string, opts ...*RequestOptions) (data T, err error) {
 }
 
 func Request[T any](method, url string, opts ...*RequestOptions) (data T, err error) {
+	opt := defaultRequestOptions(opts...)
+
+	err = RequestCallback(method, url, opt, func(resp *http.Response) (err2 error) {
+		defer resp.Body.Close()
+
+		var b []byte
+
+		if b, err2 = responseData(resp); err2 != nil {
+			return
+		}
+
+		vType := reflect.TypeOf(data)
+
+		contentType := resp.Header.Get("Content-Type")
+
+		if opt.ExpectsJSON || contentType == "application/json" {
+			// Parse JSON Content
+			switch vType.Kind() {
+			case reflect.Pointer:
+				data = reflect.New(vType).Interface().(T)
+				err2 = json.Unmarshal(b, data)
+			default:
+				err2 = json.Unmarshal(b, &data)
+			}
+
+			return
+		}
+
+		// Get Content
+		if vType.Kind() == reflect.String {
+			data = reflect.ValueOf(string(b)).Interface().(T)
+			return
+		}
+
+		err2 = errors.New("Invalid return type")
+
+		return
+	})
+
+	return
+}
+
+func RequestCallback(method, url string, opts *RequestOptions, callback Callback) (err error) {
 	var req *http.Request
 	var resp *http.Response
 
 	method = strings.ToUpper(method)
 
-	opt := defaultRequestOptions(opts...)
+	opt := defaultRequestOptions(opts)
 
 	if req, err = http.NewRequest(method, url, opt.Body); err != nil {
 		return
@@ -48,38 +93,7 @@ func Request[T any](method, url string, opts ...*RequestOptions) (data T, err er
 		return
 	}
 
-	defer resp.Body.Close()
-
-	var b []byte
-
-	if b, err = responseData(resp); err != nil {
-		return
-	}
-
-	vType := reflect.TypeOf(data)
-
-	contentType := resp.Header.Get("Content-Type")
-
-	if opt.ExpectsJSON || contentType == "application/json" {
-		// Parse JSON Content
-		switch vType.Kind() {
-		case reflect.Pointer:
-			data = reflect.New(vType).Interface().(T)
-			err = json.Unmarshal(b, data)
-		default:
-			err = json.Unmarshal(b, &data)
-		}
-
-		return
-	}
-
-	// Get Content
-	if vType.Kind() == reflect.String {
-		data = reflect.ValueOf(string(b)).Interface().(T)
-		return
-	}
-
-	err = errors.New("Invalid return type")
+	err = callback(resp)
 
 	return
 }
