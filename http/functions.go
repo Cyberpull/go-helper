@@ -10,7 +10,8 @@ import (
 	"cyberpull.com/gotk/v2/errors"
 )
 
-type Callback func(resp *http.Response) (err error)
+type Response *http.Response
+type Callback func(resp Response) (err error)
 
 func Get[T any](url string, opts ...*RequestOptions) (data T, err error) {
 	return Request[T](http.MethodGet, url, opts...)
@@ -35,7 +36,7 @@ func Delete[T any](url string, opts ...*RequestOptions) (data T, err error) {
 func Request[T any](method, url string, opts ...*RequestOptions) (data T, err error) {
 	opt := defaultRequestOptions(opts...)
 
-	err = RequestCallback(method, url, opt, func(resp *http.Response) (err2 error) {
+	err = RequestCallback(method, url, opt, func(resp Response) (err2 error) {
 		defer resp.Body.Close()
 
 		var b []byte
