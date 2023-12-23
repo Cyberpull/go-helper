@@ -3,6 +3,8 @@ package yaml
 import (
 	"io"
 	"os"
+
+	"cyberpull.com/gotk/v2"
 )
 
 func Read[T any](reader io.Reader) (value T, err error) {
@@ -27,6 +29,18 @@ func ReadFile[T any](name string) (value T, err error) {
 	defer file.Close()
 
 	value, err = Read[T](file)
+
+	return
+}
+
+func GetConfigFile[T any](paths ...string) (value T, err error) {
+	var name string
+
+	if name, err = gotk.PathFromExecutable(paths...); err != nil {
+		return
+	}
+
+	value, err = ReadFile[T](name)
 
 	return
 }
