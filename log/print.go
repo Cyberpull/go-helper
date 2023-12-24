@@ -9,6 +9,10 @@ func Print(v ...any) {
 	log.Print(v...)
 }
 
+func Println(v ...any) {
+	log.Println(v...)
+}
+
 func Printf(format string, v ...any) {
 	log.Printf(format, v...)
 }
@@ -16,8 +20,4 @@ func Printf(format string, v ...any) {
 func Printfln(format string, v ...any) {
 	format = fmt.Sprintf(format, v...)
 	log.Println(format)
-}
-
-func Println(v ...any) {
-	log.Println(v...)
 }

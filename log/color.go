@@ -15,26 +15,30 @@ const (
 	FgBlue    ColorAttribute = ColorAttribute(color.FgBlue)
 )
 
+func ColorString(a ColorAttribute, v ...any) string {
+	c := color.New(color.Attribute(a))
+	return c.SprintFunc()(v...)
+}
+
+func ColorStringF(a ColorAttribute, format string, v ...any) string {
+	c := color.New(color.Attribute(a))
+	return c.SprintfFunc()(format, v...)
+}
+
+// ======================================
+
 func Color(a ColorAttribute, v ...any) {
-	color.Set(color.Attribute(a))
-	Print(v...)
-	color.Unset()
-}
-
-func Colorf(a ColorAttribute, format string, v ...any) {
-	color.Set(color.Attribute(a))
-	Printf(format, v...)
-	color.Unset()
-}
-
-func Colorfln(a ColorAttribute, format string, v ...any) {
-	color.Set(color.Attribute(a))
-	Printfln(format, v...)
-	color.Unset()
+	Print(ColorString(a, v...))
 }
 
 func Colorln(a ColorAttribute, v ...any) {
-	color.Set(color.Attribute(a))
-	Println(v...)
-	color.Unset()
+	Println(ColorString(a, v...))
+}
+
+func Colorf(a ColorAttribute, format string, v ...any) {
+	Printf(ColorStringF(a, format, v...))
+}
+
+func Colorfln(a ColorAttribute, format string, v ...any) {
+	Printfln(ColorStringF(a, format, v...))
 }
