@@ -30,7 +30,9 @@ func Printfln(format string, v ...any) {
 var logger *log.Logger
 
 func init() {
-	logger = log.Default()
+	def := log.Default()
+
+	logger = log.New(def.Writer(), def.Prefix(), def.Flags())
 
 	if runtime.GOOS == "windows" {
 		logger.SetOutput(color.Output)
