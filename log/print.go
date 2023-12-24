@@ -3,21 +3,36 @@ package log
 import (
 	"fmt"
 	"log"
+	"runtime"
+
+	"github.com/fatih/color"
 )
 
 func Print(v ...any) {
-	log.Print(v...)
+	logger.Print(v...)
 }
 
 func Println(v ...any) {
-	log.Println(v...)
+	logger.Println(v...)
 }
 
 func Printf(format string, v ...any) {
-	log.Printf(format, v...)
+	logger.Printf(format, v...)
 }
 
 func Printfln(format string, v ...any) {
 	format = fmt.Sprintf(format, v...)
-	log.Println(format)
+	logger.Println(format)
+}
+
+// =====================================
+
+var logger *log.Logger
+
+func init() {
+	logger = log.Default()
+
+	if runtime.GOOS == "windows" {
+		logger.SetOutput(color.Output)
+	}
 }
