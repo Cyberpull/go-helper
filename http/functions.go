@@ -49,7 +49,7 @@ func Request[T any](method, url string, opts ...*RequestOptions) (data T, err er
 
 		contentType := resp.Header.Get("Content-Type")
 
-		if opt.ExpectsJSON || contentType == "application/json" {
+		if opt.ExpectsJSON || strings.HasPrefix(contentType, "application/json") {
 			// Parse JSON Content
 			switch vType.Kind() {
 			case reflect.Pointer:
